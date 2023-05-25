@@ -1,0 +1,8 @@
+.inputDate {
+    background-color: yellowgreen;
+    padding: 10px 15px;
+}
+
+.inputDate > *:not(:last-child) {
+    margin-right: 1.2rem;
+}
