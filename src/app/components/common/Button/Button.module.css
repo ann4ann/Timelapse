@@ -1,5 +1,5 @@
 .button {
-    background-color: rgba(78, 147, 137, 0.15);
+    background-color: var(--transperent-accent-color);
     padding: 10px 15px;
     border: none;
     border-radius: 5px;

@@ -1,18 +1,11 @@
-import React, {ChangeEventHandler, useState} from 'react';
+import React, {ChangeEventHandler, FormEvent, useEffect, useState} from 'react';
 import './App.css';
-import {Button} from "./app/components/common/Button/Button";
 import {align, Text} from "./app/components/common/Text/Text";
 import {Timelapse} from "./app/components/ui/Timelapse/Timelapse";
-import {InputDate} from "./app/components/common/Input/InputDate/InputDate";
 import {date, project} from "./app/types/types";
+import {CreateProjectForm} from "./app/components/ui/CreateProjectForm/CreateProjectForm";
 
 //==================Данные для теста==================
-
-// const testProject: project = {
-//     startDate: "2023-05-10",
-//     endDate: "2023-06-30",
-//     projectName: "TestProj"
-// }
 
 const dates: date[] = [
     {
@@ -24,7 +17,6 @@ const dates: date[] = [
         dateName: "second"
     },
 ]
-
 //===========================================
 
 function App() {
@@ -33,15 +25,26 @@ function App() {
         endDate: "",
         projectName: ""
     })
+    
+    useEffect(() => {
+        const strData = localStorage.getItem("projectData")
+        if (strData) {
+            setProjectData(JSON.parse(strData))
+        }
+    }, [])
 
-    const changeInputHandler:ChangeEventHandler<HTMLInputElement> = ({target}) => {
-        console.log(target)
-        setProjectData((prevstate) => {
+    const changeInputHandler: ChangeEventHandler<HTMLInputElement> = ({target}) => {
+        setProjectData((prevState) => {
             return ({
-                ...prevstate,
+                ...prevState,
                 [target.name]: target.value
             })
         })
+    }
+
+    const submitFormHandler = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        localStorage.setItem("projectData", JSON.stringify(projectData))
     }
 
     return (
@@ -51,28 +54,11 @@ function App() {
                 content="Let's start our timelapse!"
                 align={align.CENTER}
             />
-            <InputDate
-                label="Введите имя проекта:"
-                onChange={changeInputHandler}
-                value={projectData.projectName}
-                name={"projectName"}
-                type={"text"}
+            <CreateProjectForm
+                changeInputHandler={changeInputHandler}
+                submitFormHandler={submitFormHandler}
+                projectData={projectData}
             />
-            <InputDate
-                label="Выберите начало проекта:"
-                onChange={changeInputHandler}
-                value={projectData.startDate}
-                name={"startDate"}
-                type={"date"}
-            />
-            <InputDate
-                label="Выберите окончание проекта:"
-                onChange={changeInputHandler}
-                value={projectData.endDate}
-                name={"endDate"}
-                type={"date"}
-            />
-            <Button text="Let's timelapse!"/>
             <Timelapse projectData={projectData} stages={dates}/>
         </div>
     );

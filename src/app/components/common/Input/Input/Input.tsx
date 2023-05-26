@@ -1,6 +1,5 @@
-import {ChangeEventHandler, memo, useState} from "react";
-import cls from "./InputDate.module.css"
-import {Button} from "../../Button/Button";
+import {ChangeEventHandler, memo} from "react";
+import cls from "./Input.module.css"
 import {Text} from "../../Text/Text";
 
 interface InputDateProps {
@@ -11,7 +10,7 @@ interface InputDateProps {
     type?: "text" | "date" | "password"
 }
 
-export const InputDate = memo((props: InputDateProps) => {
+export const Input = memo((props: InputDateProps) => {
     const {
         label = "",
         onChange,
@@ -22,14 +21,17 @@ export const InputDate = memo((props: InputDateProps) => {
 
     return (
         <div className={cls.inputDate}>
-            <label htmlFor="someDate">{label}</label>
+            <label htmlFor="someDate" className={cls.label}>
+                {label}
+            </label>
             <input
+                className={cls.input}
                 onChange={onChange}
                 value={value}
                 name={name}
                 type={type}
             />
-            <Text content={value} />
+            {/*<Text content={value} />*/}
         </div>
     )
 })

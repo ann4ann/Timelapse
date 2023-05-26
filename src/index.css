@@ -1,5 +1,12 @@
 @import "reset.css";
 
+:root {
+  --background-color: #fffbe9;
+  --accent-color: #74cebf;
+  --transperent-accent-color: rgba(78, 147, 137, 0.2);
+  --primary-color: #b6da6b;
+}
+
 body {
   font-family: 'Verdana', sans-serif;
   -webkit-font-smoothing: antialiased;
