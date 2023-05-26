@@ -4,22 +4,32 @@ import {Button} from "../../Button/Button";
 import {Text} from "../../Text/Text";
 
 interface InputDateProps {
-
+    label?: string,
+    onChange?: ChangeEventHandler<HTMLInputElement>,
+    value?: string,
+    name: string,
+    type?: "text" | "date" | "password"
 }
 
 export const InputDate = memo((props: InputDateProps) => {
-    const {} = props
-    const [date, setDate] = useState<string>("")
-
-    const helper:ChangeEventHandler<HTMLInputElement> = (e) => {
-        setDate(e.currentTarget.value)
-    }
+    const {
+        label = "",
+        onChange,
+        value = "",
+        name = "",
+        type = "text",
+    } = props
 
     return (
         <div className={cls.inputDate}>
-            <label htmlFor="someDate">someDate</label>
-            <input onChange={helper} type="date" name="someDate" value={date}/>
-            <Text content={date} />
+            <label htmlFor="someDate">{label}</label>
+            <input
+                onChange={onChange}
+                value={value}
+                name={name}
+                type={type}
+            />
+            <Text content={value} />
         </div>
     )
 })

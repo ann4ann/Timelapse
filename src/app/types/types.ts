@@ -1,11 +1,11 @@
 export interface date {
     dateStr: string,
-    name: string,
+    dateName: string,
     percent?: number,
 }
 
 export interface project {
     startDate: string,
     endDate: string,
-    name: string,
+    projectName: string,
 }

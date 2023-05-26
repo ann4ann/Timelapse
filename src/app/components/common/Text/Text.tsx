@@ -22,8 +22,8 @@ export const Text = memo((props: TextProps) => {
 
     return (
         <div className={`${cls.text} ${cls[`${align}`]}`}>
-            <p className={cls.title}>{title}</p>
-            <p className={cls.content}>{content}</p>
+            {title && (<p className={cls.title}>{title}</p>)}
+            {content && (<p className={cls.content}>{content}</p>)}
         </div>
     )
 })

@@ -1,7 +1,6 @@
 @import "reset.css";
 
 body {
-  margin: 0;
   font-family: 'Verdana', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
