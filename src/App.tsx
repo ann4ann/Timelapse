@@ -4,6 +4,7 @@ import {align, Text} from "./app/components/common/Text/Text";
 import {Timelapse} from "./app/components/ui/Timelapse/Timelapse";
 import {date, project} from "./app/types/types";
 import {CreateProjectForm} from "./app/components/ui/CreateProjectForm/CreateProjectForm";
+import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 
 //==================Данные для теста==================
 
@@ -20,6 +21,8 @@ const dates: date[] = [
 //===========================================
 
 function App() {
+    const [projectExist, setProjectExist] = useState<boolean>(false)
+
     const [projectData, setProjectData] = useState<project>({
         startDate: "",
         endDate: "",
@@ -30,6 +33,7 @@ function App() {
         const strData = localStorage.getItem("projectData")
         if (strData) {
             setProjectData(JSON.parse(strData))
+            setProjectExist(true)
         }
     }, [])
 
@@ -44,7 +48,18 @@ function App() {
 
     const submitFormHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        localStorage.setItem("projectData", JSON.stringify(projectData))
+        if (
+            projectData.projectName
+            && projectData.startDate
+            && projectData.endDate
+        ) {
+            localStorage.setItem("projectData", JSON.stringify(projectData))
+            setProjectExist(true)
+        }
+    }
+
+    const toggleProjectExist = () => {
+        setProjectExist(!projectExist)
     }
 
     return (
@@ -54,12 +69,20 @@ function App() {
                 content="Let's start our timelapse!"
                 align={align.CENTER}
             />
-            <CreateProjectForm
+            {!projectExist && (<CreateProjectForm
                 changeInputHandler={changeInputHandler}
                 submitFormHandler={submitFormHandler}
                 projectData={projectData}
-            />
-            <Timelapse projectData={projectData} stages={dates}/>
+
+            />)}
+            {projectExist && (<ProjectInfo
+                onClick={toggleProjectExist}
+                projectData={projectData}
+            />)}
+            {projectExist && (<Timelapse
+                projectData={projectData}
+                stages={dates}
+            />)}
         </div>
     );
 }
