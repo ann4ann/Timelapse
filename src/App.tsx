@@ -10,12 +10,16 @@ import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 
 const dates: date[] = [
     {
-        dateStr: "2023-05-25",
-        dateName: "first"
+        dateStr: "2023-05-24",
+        dateName: "third"
     },
     {
-        dateStr: "2023-05-29",
+        dateStr: "2023-05-20",
         dateName: "second"
+    },
+    {
+        dateStr: "2023-05-15",
+        dateName: "first"
     },
 ]
 //===========================================
@@ -26,7 +30,7 @@ function App() {
     const [projectData, setProjectData] = useState<project>({
         startDate: "",
         endDate: "",
-        projectName: ""
+        projectName: "",
     })
     
     useEffect(() => {
@@ -45,7 +49,6 @@ function App() {
             })
         })
     }
-
     const submitFormHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (

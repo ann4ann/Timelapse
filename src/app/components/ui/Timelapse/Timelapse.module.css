@@ -1,5 +1,6 @@
 .timelapse {
     width: 100%;
-    background-color: red;
-    padding: 10px 15px;
+    height: 50px;
+    background-color: var(--accent-color);
+    display: flex;
 }
