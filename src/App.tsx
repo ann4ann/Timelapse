@@ -78,14 +78,16 @@ function App() {
                 projectData={projectData}
 
             />)}
-            {projectExist && (<ProjectInfo
-                onClick={toggleProjectExist}
-                projectData={projectData}
-            />)}
-            {projectExist && (<Timelapse
-                projectData={projectData}
-                stages={dates}
-            />)}
+            {projectExist && (<>
+                <ProjectInfo
+                    onClick={toggleProjectExist}
+                    projectData={projectData}
+                />
+                <Timelapse
+                    projectData={projectData}
+                    stages={dates}
+                />
+            </>)}
         </div>
     );
 }

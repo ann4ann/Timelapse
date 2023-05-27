@@ -1,8 +1,14 @@
 import {date} from "../types/types";
 import {sortBy} from "lodash"
 
+export function formatDateString(date: string): string {
+    const [year, monthNum, day] = date.split("-")
+    const monthArr = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+    const month = monthArr[Number(monthNum) - 1]
+    return `${day} ${month} ${year}`
+}
 
-export function timilapseDatesActions(start: string, end: string):number {
+export function getDaysFromStartToEnd(start: string, end: string):number {
     const startDayMs = new Date(start)
     const endDayMs = new Date(end)
     const countDays = (endDayMs.getTime() - startDayMs.getTime())
@@ -17,7 +23,7 @@ export function addPercentsToDatesAndSort(
     daysInProject: number
 ): Required<date>[] {
     const arrWithPercents = datesArr.map((item) => {
-        const daysAfterStart = timilapseDatesActions(start, item.dateStr)
+        const daysAfterStart = getDaysFromStartToEnd(start, item.dateStr)
         const percent = Math.round(daysAfterStart / daysInProject * 100)
         return ({...item, percent: percent})
     })
@@ -29,7 +35,7 @@ export function addPercentsToDatesAndSort(
         const absolutePercent = item.percent - sortedArr[index - 1].percent
         return ({...item, absolutePercent: absolutePercent})
     })
-    console.log(sortedArr)
+    // console.log(sortedArr)
 
     return resultArr
 }

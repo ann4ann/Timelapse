@@ -1,8 +1,9 @@
 import {memo} from "react";
 import cls from "./Timelapse.module.css"
-import {addPercentsToDatesAndSort, timilapseDatesActions} from "../../../utils/timilapseDatesActions";
+import {addPercentsToDatesAndSort, getDaysFromStartToEnd} from "../../../utils/timilapseDatesActions";
 import {date, project} from "../../../types/types";
 import {createRandomColor} from "../../../utils/createRandomColor";
+import {TimelapseBlock} from "./TimelapseBlock/TimelapseBlock";
 
 interface TimelapseProps {
     projectData: project,
@@ -15,15 +16,13 @@ export const Timelapse = memo((props: TimelapseProps) => {
         stages,
     } = props
 
-    const daysFromStartToEnd = timilapseDatesActions(projectData.startDate, projectData.endDate)
+    const daysFromStartToEnd = getDaysFromStartToEnd(projectData.startDate, projectData.endDate)
     const sortedArrWithPercents = addPercentsToDatesAndSort(stages, projectData.startDate, daysFromStartToEnd)
 
     return (
         <div className={cls.timelapse}>{
             sortedArrWithPercents.map(item => (
-                <div style={{width: `${item.absolutePercent}%`, backgroundColor: createRandomColor(), textAlign: "center"}}>
-                    {item.dateName}
-                </div>
+                <TimelapseBlock blockDate={item} />
             ))
         }</div>
     )
