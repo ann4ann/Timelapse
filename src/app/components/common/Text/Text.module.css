@@ -12,6 +12,10 @@
     font-size: 14px;
 }
 
+.error {
+    color: var(--error);
+}
+
 .left {
     text-align: left;
 }
@@ -23,3 +27,4 @@
 .right {
     text-align: right;
 }
+

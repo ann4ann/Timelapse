@@ -1,17 +1,19 @@
-import {memo} from "react";
+import {memo, ReactNode} from "react";
 import cls from "./Button.module.css"
 
 interface ButtonProps {
     text: string,
     onClick?: () => void,
-    type?: "button" | "submit" | "reset" | undefined
+    type?: "button" | "submit" | "reset" | undefined,
+    children?: ReactNode,
 }
 
 export const Button = memo((props: ButtonProps) => {
     const {
         text,
         onClick,
-        type = "button"
+        type = "button",
+        children
     } = props
 
     return (
@@ -20,7 +22,7 @@ export const Button = memo((props: ButtonProps) => {
             type={type}
             className={cls.button}
         >
-            {text}
+            {children? children : text}
         </button>
     )
 })

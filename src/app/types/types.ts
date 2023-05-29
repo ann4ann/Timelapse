@@ -10,3 +10,4 @@ export interface project {
     endDate: string,
     projectName: string,
 }
+

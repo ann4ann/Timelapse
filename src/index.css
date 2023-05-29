@@ -5,6 +5,7 @@
   --accent-color: #74cebf;
   --transperent-accent-color: rgba(78, 147, 137, 0.2);
   --primary-color: #b6da6b;
+  --error: #a20000;
 }
 
 body {

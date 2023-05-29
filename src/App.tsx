@@ -1,10 +1,12 @@
 import React, {ChangeEventHandler, FormEvent, useEffect, useState} from 'react';
 import './App.css';
-import {align, Text} from "./app/components/common/Text/Text";
+import {Text, textAlign} from "./app/components/common/Text/Text";
 import {Timelapse} from "./app/components/ui/Timelapse/Timelapse";
 import {date, project} from "./app/types/types";
 import {CreateProjectForm} from "./app/components/ui/CreateProjectForm/CreateProjectForm";
 import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
+import {Button} from "./app/components/common/Button/Button";
+import {Form} from "./app/components/common/Form/newForm";
 
 //==================Данные для теста==================
 
@@ -24,20 +26,29 @@ const dates: date[] = [
 ]
 //===========================================
 
-function App() {
-    const [projectExist, setProjectExist] = useState<boolean>(false)
+// type FormValues = {
+//
+// }
 
+function App() {
+    const [projectInEditing, setProjectInEditing] = useState<boolean>(true)
     const [projectData, setProjectData] = useState<project>({
         startDate: "",
         endDate: "",
         projectName: "",
     })
-    
+    const [projectStages, setProjectStages] = useState<date[] | []>([])
+    const [stagesInEditing, setStagesInEditing] = useState<boolean>(false)
+
     useEffect(() => {
         const strData = localStorage.getItem("projectData")
+        const strStages = localStorage.getItem("projectStages")
         if (strData) {
             setProjectData(JSON.parse(strData))
-            setProjectExist(true)
+            setProjectInEditing(false)
+        }
+        if (strStages) {
+            setProjectStages(JSON.parse(strStages))
         }
     }, [])
 
@@ -57,37 +68,53 @@ function App() {
             && projectData.endDate
         ) {
             localStorage.setItem("projectData", JSON.stringify(projectData))
-            setProjectExist(true)
+            setProjectInEditing(false)
         }
     }
 
-    const toggleProjectExist = () => {
-        setProjectExist(!projectExist)
+    const toggleProjectInEditing = () => {
+        setProjectInEditing(!projectInEditing)
+    }
+    const toggleStagesInEditing = () => {
+        setStagesInEditing(!stagesInEditing)
+    }
+
+    // UseFormHandleSubmit<FieldValues, undefined>
+    const handleSubmit = (data: any) => {
+        console.log(JSON.stringify(data) + " submit")
     }
 
     return (
         <div className="App">
+            {/*<Form onSubmit={handleSubmit}/>*/}
+            <Form />
             <Text
                 title="Timelapse"
                 content="Let's start our timelapse!"
-                align={align.CENTER}
+                align={textAlign.CENTER}
             />
-            {!projectExist && (<CreateProjectForm
-                changeInputHandler={changeInputHandler}
-                submitFormHandler={submitFormHandler}
-                projectData={projectData}
-
-            />)}
-            {projectExist && (<>
-                <ProjectInfo
-                    onClick={toggleProjectExist}
+            {projectInEditing
+                ? <CreateProjectForm
+                    changeInputHandler={changeInputHandler}
+                    submitFormHandler={submitFormHandler}
                     projectData={projectData}
                 />
-                <Timelapse
-                    projectData={projectData}
-                    stages={dates}
-                />
-            </>)}
+                : <>
+                    <ProjectInfo
+                        onClick={toggleProjectInEditing}
+                        projectData={projectData}
+                    />
+                    <Timelapse
+                        projectData={projectData}
+                        stages={projectStages}
+                    />
+                    {stagesInEditing
+                        ? <div>
+                            ... adding stage
+                        </div>
+                        : <Button text="add stage" onClick={toggleStagesInEditing} />
+                    }
+                </>}
         </div>
     );
 }

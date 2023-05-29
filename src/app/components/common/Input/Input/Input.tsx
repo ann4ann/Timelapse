@@ -2,7 +2,7 @@ import {ChangeEventHandler, memo} from "react";
 import cls from "./Input.module.css"
 import {Text} from "../../Text/Text";
 
-interface InputDateProps {
+export interface InputDateProps {
     label?: string,
     onChange?: ChangeEventHandler<HTMLInputElement>,
     value?: string,
@@ -20,7 +20,7 @@ export const Input = memo((props: InputDateProps) => {
     } = props
 
     return (
-        <div className={cls.inputDate}>
+        <div className={cls.inputTest}>
             <label htmlFor="someDate" className={cls.label}>
                 {label}
             </label>
