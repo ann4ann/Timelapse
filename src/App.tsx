@@ -6,7 +6,8 @@ import {date, project} from "./app/types/types";
 import {CreateProjectForm} from "./app/components/ui/CreateProjectForm/CreateProjectForm";
 import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 import {Button} from "./app/components/common/Button/Button";
-import {Form} from "./app/components/common/Form/newForm";
+import {Form} from "./app/components/common/Form/Form";
+import {Input, Select} from "./app/components/common/Input/Input/NewestInput";
 
 //==================Данные для теста==================
 
@@ -26,9 +27,6 @@ const dates: date[] = [
 ]
 //===========================================
 
-// type FormValues = {
-//
-// }
 
 function App() {
     const [projectInEditing, setProjectInEditing] = useState<boolean>(true)
@@ -80,14 +78,19 @@ function App() {
     }
 
     // UseFormHandleSubmit<FieldValues, undefined>
-    const handleSubmit = (data: any) => {
-        console.log(JSON.stringify(data) + " submit")
-    }
+    const onSubmit = (data: any) => {
+        console.log(data)
+    };
 
     return (
         <div className="App">
-            {/*<Form onSubmit={handleSubmit}/>*/}
-            <Form />
+            <Form onSubmit={onSubmit}>
+                <Input name="ProjectName" label="Введите имя проекта"/>
+                <Input name="startDate" label="Укажите начало проекта" inputType="date" />
+                <Input name="endDate" label="Укажите окончание проекта" inputType="date" />
+                <Select name="urgently" label="Важность проекта" options={["Urgent", "Not urgent"]} />
+                <Button text="Let's check form!" type="submit"/>
+            </Form>
             <Text
                 title="Timelapse"
                 content="Let's start our timelapse!"
