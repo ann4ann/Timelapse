@@ -18,7 +18,10 @@ export const Form = (props: FormProps) => {
         handleSubmit,
         register,
         formState: { errors }
-    } = useForm({ resolver: resolver });
+    } = useForm({
+        resolver: resolver,
+        defaultValues: defaultValues
+    });
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,48 +1,27 @@
-import React, {ChangeEventHandler, FormEvent, memo} from "react";
-import cls from "./CreateProjectForm.module.css"
+import React, {memo} from "react";
 import {Input} from "../../common/Input/Input/Input";
 import {Button} from "../../common/Button/Button";
 import {project} from "../../../types/types";
+import {Form} from "../../common/Form/Form";
 
 interface CreateProjectFormProps {
-    changeInputHandler: ChangeEventHandler<HTMLInputElement>
-    submitFormHandler: (e: FormEvent<HTMLFormElement>) => void,
+    onSubmit: (data: any) => void,
     projectData: project
 }
 
 export const CreateProjectForm = memo((props: CreateProjectFormProps) => {
     const {
-        changeInputHandler,
-        submitFormHandler,
+        onSubmit,
         projectData,
     } = props
 
-
-
     return (
-        <form onSubmit={submitFormHandler} className={cls.createProjectForm}>
-            <Input
-                label="Введите имя проекта:"
-                onChange={changeInputHandler}
-                value={projectData.projectName}
-                name={"projectName"}
-                type={"text"}
-            />
-            <Input
-                label="Выберите начало проекта:"
-                onChange={changeInputHandler}
-                value={projectData.startDate}
-                name={"startDate"}
-                type={"date"}
-            />
-            <Input
-                label="Выберите окончание проекта:"
-                onChange={changeInputHandler}
-                value={projectData.endDate}
-                name={"endDate"}
-                type={"date"}
-            />
-            <Button text="Let's timelapse!" type={"submit"}/>
-        </form>
+        <Form onSubmit={onSubmit} defaultValues={projectData}>
+            <Input name="projectName" label="Введите имя проекта"/>
+            <Input name="startDate" label="Укажите начало проекта" inputType="date" />
+            <Input name="endDate" label="Укажите окончание проекта" inputType="date" />
+            {/*<Select name="urgently" label="Важность проекта" options={["Urgent", "Not urgent"]} />*/}
+            <Button text="Start timelapse!" type="submit"/>
+        </Form>
     )
 })

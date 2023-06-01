@@ -1,36 +1,82 @@
-import {ChangeEventHandler, memo} from "react";
-import cls from "./Input.module.css"
+import React from "react";
+import {FieldErrors, UseFormRegister} from "react-hook-form";
+import cls from "./Input.module.css";
 
-export interface InputDateProps {
-    label?: string,
-    onChange?: ChangeEventHandler<HTMLInputElement>,
-    value?: string,
+export type inputType = "text" | "date" | "password"
+
+interface InputProps {
+    register?: UseFormRegister<any>,
+    errors?: FieldErrors<any>,
     name: string,
-    type?: "text" | "date" | "password"
+    label?: string,
+    inputType?: inputType,
+}
+interface SelectProps {
+    register?: UseFormRegister<any>,
+    errors?: FieldErrors<any>,
+    name: string
+    options: string[],
+    label?: string,
 }
 
-export const Input = memo((props: InputDateProps) => {
+export const Input = (props: InputProps) => {
     const {
+        register,
+        errors,
+        name,
         label = "",
-        onChange,
-        value = "",
-        name = "",
-        type = "text",
+        inputType = "text",
+        ...rest
     } = props
 
-    return (
+    const errorMessage = errors?[name]
+        && errors[name]?.message : null
+
+    if (register) {
+        return (
+            <div className={cls.input}>
+                <label htmlFor={name} className={cls.label}>
+                    {label}
+                </label>
+                <div className={cls.inputBlock}>
+                    <input
+                        {...register(name)} {...rest}
+                        className={cls.inputField}
+                        type={inputType}
+                    />
+                    {errorMessage && <div  className={cls.error}>{errorMessage.toString()}</div>}
+
+                </div>
+            </div>
+        )
+    } else {
+        return null
+    }
+}
+
+export const Select = (props: SelectProps) => {
+    const {register, options, name, label = "", ...rest} = props
+
+    if (register) {
+        return (
+
         <div className={cls.input}>
-            <label htmlFor="someDate" className={cls.label}>
+            <label htmlFor={name} className={cls.label}>
                 {label}
             </label>
-            <input
-                className={cls.input}
-                onChange={onChange}
-                value={value}
-                name={name}
-                type={type}
-            />
-            {/*<Text content={value} />*/}
+            <select
+                {...register(name)} {...rest}
+                className={cls.inputField}
+            >
+                {options.map(value => (
+                    <option key={value} value={value}>
+                        {value}
+                    </option>
+                ))}
+            </select>
         </div>
-    )
-})
+        )
+    } else {
+        return null
+    }
+}

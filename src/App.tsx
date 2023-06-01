@@ -1,4 +1,4 @@
-import React, {ChangeEventHandler, FormEvent, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Text, textAlign} from "./app/components/common/Text/Text";
 import {Timelapse} from "./app/components/ui/Timelapse/Timelapse";
@@ -6,9 +6,6 @@ import {date, project} from "./app/types/types";
 import {CreateProjectForm} from "./app/components/ui/CreateProjectForm/CreateProjectForm";
 import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 import {Button} from "./app/components/common/Button/Button";
-import {Form} from "./app/components/common/Form/Form";
-import {Input, Select} from "./app/components/common/Input/Input/NewestInput";
-import {resolver} from "./app/components/common/Form/resolver";
 
 //==================Данные для теста==================
 
@@ -51,26 +48,6 @@ function App() {
         }
     }, [])
 
-    const changeInputHandler: ChangeEventHandler<HTMLInputElement> = ({target}) => {
-        setProjectData((prevState) => {
-            return ({
-                ...prevState,
-                [target.name]: target.value
-            })
-        })
-    }
-    const submitFormHandler = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (
-            projectData.projectName
-            && projectData.startDate
-            && projectData.endDate
-        ) {
-            localStorage.setItem("projectData", JSON.stringify(projectData))
-            setProjectInEditing(false)
-        }
-    }
-
     const toggleProjectInEditing = () => {
         setProjectInEditing(!projectInEditing)
     }
@@ -78,20 +55,14 @@ function App() {
         setStagesInEditing(!stagesInEditing)
     }
 
-    // UseFormHandleSubmit<FieldValues, undefined>
     const onSubmit = (data: any) => {
-        console.log(data)
+        setProjectData(data)
+        localStorage.setItem("projectData", JSON.stringify(data))
+        setProjectInEditing(false)
     };
 
     return (
         <div className="App">
-            <Form onSubmit={onSubmit} defaultValues={resolver}>
-                <Input name="projectName" label="Введите имя проекта"/>
-                <Input name="startDate" label="Укажите начало проекта" inputType="date" />
-                <Input name="endDate" label="Укажите окончание проекта" inputType="date" />
-                <Select name="urgently" label="Важность проекта" options={["Urgent", "Not urgent"]} />
-                <Button text="Let's check form!" type="submit"/>
-            </Form>
             <Text
                 title="Timelapse"
                 content="Let's start our timelapse!"
@@ -99,8 +70,7 @@ function App() {
             />
             {projectInEditing
                 ? <CreateProjectForm
-                    changeInputHandler={changeInputHandler}
-                    submitFormHandler={submitFormHandler}
+                    onSubmit={onSubmit}
                     projectData={projectData}
                 />
                 : <>
