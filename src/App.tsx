@@ -33,7 +33,10 @@ function App() {
         endDate: "",
         projectName: "",
     })
-    const [projectStages, setProjectStages] = useState<date[] | []>([])
+    const [projectStages, setProjectStages] = useState<date[] | []>(
+        // []
+        dates
+    )
     const [stagesInEditing, setStagesInEditing] = useState<boolean>(false)
 
     useEffect(() => {

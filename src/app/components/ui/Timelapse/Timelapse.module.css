@@ -1,6 +1,7 @@
 .timelapse {
     width: 100%;
     min-height: 50px;
-    background-color: var(--accent-color);
+    background-color: var(--transperent-accent-color);
+    padding: 10px;
     display: flex;
 }

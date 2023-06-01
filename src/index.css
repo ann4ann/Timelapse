@@ -4,7 +4,8 @@
   --background-color: #fffbe9;
   --accent-color: #74cebf;
   --transperent-accent-color: rgba(78, 147, 137, 0.2);
-  --primary-color: #b6da6b;
+  --primary-color: #d3e7ad;
+  --dark-color: #587574;
   --error: #a20000;
 }
 
@@ -18,4 +19,27 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* width */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+  background: var(--transperent-accent-color);
+  margin: 18px;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+  background: var(--dark-color);
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
 }

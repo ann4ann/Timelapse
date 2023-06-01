@@ -1,6 +1,7 @@
 import React from "react";
 import {useForm} from "react-hook-form"
 import {resolver} from "./resolver";
+import cls from "./Form.module.css"
 
 interface FormProps {
     defaultValues?: any,
@@ -24,7 +25,10 @@ export const Form = (props: FormProps) => {
     });
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={cls.form}
+        >
             {Array.isArray(children)
                 ? children.map((child) => {
                     return child.props.name
