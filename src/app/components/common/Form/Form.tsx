@@ -1,5 +1,6 @@
 import React from "react";
 import {useForm} from "react-hook-form"
+import {resolver} from "./resolver";
 
 interface FormProps {
     defaultValues?: any,
@@ -13,7 +14,11 @@ export const Form = (props: FormProps) => {
         children,
         onSubmit
     } = props
-    const { handleSubmit, register } = useForm({ defaultValues });
+    const {
+        handleSubmit,
+        register,
+        formState: { errors }
+    } = useForm({ resolver: resolver });
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -24,6 +29,7 @@ export const Form = (props: FormProps) => {
                             ...{
                                 ...child.props,
                                 register,
+                                errors,
                                 key: child.props.name
                             }
                         })

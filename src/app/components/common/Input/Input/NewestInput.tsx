@@ -1,11 +1,12 @@
 import React from "react";
-import {UseFormRegister} from "react-hook-form";
+import {FieldErrors, UseFormRegister} from "react-hook-form";
 import cls from "./Input.module.css";
 
-export type inputType = "text" | "date"
+export type inputType = "text" | "date" | "password"
 
 interface InputProps {
     register?: UseFormRegister<any>,
+    errors?: FieldErrors<any>,
     // ?
     name: string,
     label?: string,
@@ -13,6 +14,7 @@ interface InputProps {
 }
 interface SelectProps {
     register?: UseFormRegister<any>,
+    errors?: FieldErrors<any>,
     // ?
     name: string
     // ??????????????????????????
@@ -21,19 +23,33 @@ interface SelectProps {
 }
 
 export const Input = (props: InputProps) => {
-    const {register, name, label = "", inputType = "text", ...rest} = props
+    const {
+        register,
+        errors,
+        name,
+        label = "",
+        inputType = "text",
+        ...rest
+    } = props
+
+    const errorMessage = errors?[name]
+        && errors[name]?.message : null
 
     if (register) {
         return (
-            <div className={cls.inputTest}>
+            <div className={cls.input}>
                 <label htmlFor={name} className={cls.label}>
                     {label}
                 </label>
-                <input
-                    {...register(name)} {...rest}
-                    className={cls.input}
-                    type={inputType}
-                />
+                <div className={cls.inputBlock}>
+                    <input
+                        {...register(name)} {...rest}
+                        className={cls.inputField}
+                        type={inputType}
+                    />
+                    {errorMessage && <div  className={cls.error}>{errorMessage.toString()}</div>}
+
+                </div>
             </div>
         )
     } else {
@@ -47,13 +63,13 @@ export const Select = (props: SelectProps) => {
     if (register) {
         return (
 
-        <div className={cls.inputTest}>
+        <div className={cls.input}>
             <label htmlFor={name} className={cls.label}>
                 {label}
             </label>
             <select
                 {...register(name)} {...rest}
-                className={cls.input}
+                className={cls.inputField}
             >
                 {options.map(value => (
                     <option key={value} value={value}>

@@ -45,10 +45,10 @@ export const Form = memo((props: FormProps) => {
     return (
         <form onSubmit={onSubmit}>
 
-            {/*<div style={{marginBottom: "15px"}}>*/}
-            {/*    <input {...register("projectName")} placeholder="projectName" />*/}
-            {/*    {errors?.projectName && <p>{errors.projectName?.message}</p>}*/}
-            {/*</div>*/}
+            <div style={{marginBottom: "15px"}}>
+                <input {...register("projectName")} placeholder="projectName" />
+                {errors?.projectName && <p>{errors.projectName?.message}</p>}
+            </div>
 
             {/*<div style={{marginBottom: "15px"}}>*/}
             {/*    <input {...register("startDate")} placeholder="startDate" />*/}

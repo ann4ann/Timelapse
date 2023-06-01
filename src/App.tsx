@@ -8,6 +8,7 @@ import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 import {Button} from "./app/components/common/Button/Button";
 import {Form} from "./app/components/common/Form/Form";
 import {Input, Select} from "./app/components/common/Input/Input/NewestInput";
+import {resolver} from "./app/components/common/Form/resolver";
 
 //==================Данные для теста==================
 
@@ -84,8 +85,8 @@ function App() {
 
     return (
         <div className="App">
-            <Form onSubmit={onSubmit}>
-                <Input name="ProjectName" label="Введите имя проекта"/>
+            <Form onSubmit={onSubmit} defaultValues={resolver}>
+                <Input name="projectName" label="Введите имя проекта"/>
                 <Input name="startDate" label="Укажите начало проекта" inputType="date" />
                 <Input name="endDate" label="Укажите окончание проекта" inputType="date" />
                 <Select name="urgently" label="Важность проекта" options={["Urgent", "Not urgent"]} />
