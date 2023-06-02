@@ -43,6 +43,7 @@ export const Input = (props: InputProps) => {
                         {...register(name)} {...rest}
                         className={cls.inputField}
                         type={inputType}
+                        id={name}
                     />
                     {errorMessage && <div  className={cls.error}>{errorMessage.toString()}</div>}
 
@@ -67,6 +68,7 @@ export const Select = (props: SelectProps) => {
             <select
                 {...register(name)} {...rest}
                 className={cls.inputField}
+                id={name}
             >
                 {options.map(value => (
                     <option key={value} value={value}>

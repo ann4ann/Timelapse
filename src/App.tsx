@@ -6,6 +6,7 @@ import {date, project} from "./app/types/types";
 import {CreateProjectForm} from "./app/components/ui/CreateProjectForm/CreateProjectForm";
 import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 import {Button} from "./app/components/common/Button/Button";
+import {ProjectProvider} from "./app/providers";
 
 //==================Данные для теста==================
 
@@ -65,34 +66,33 @@ function App() {
     };
 
     return (
-        <div className="App">
-            <Text
-                title="Timelapse"
-                content="Let's start our timelapse!"
-                align={textAlign.CENTER}
-            />
-            {projectInEditing
-                ? <CreateProjectForm
-                    onSubmit={onSubmit}
-                    projectData={projectData}
-                />
-                : <>
-                    <ProjectInfo
-                        onClick={toggleProjectInEditing}
-                        projectData={projectData}
+        <ProjectProvider initialProjectData={projectData}>
+                <div className="App">
+                    <Text
+                        title="Timelapse"
+                        content="Let's start our timelapse!"
+                        align={textAlign.CENTER}
                     />
-                    <Timelapse
-                        projectData={projectData}
-                        stages={projectStages}
-                    />
-                    {stagesInEditing
-                        ? <div>
-                            ... adding stage
-                        </div>
-                        : <Button text="add stage" onClick={toggleStagesInEditing} />
-                    }
-                </>}
-        </div>
+                    {projectInEditing
+                        ? <CreateProjectForm
+                            onSubmit={onSubmit}
+                        />
+                        : <>
+                            <ProjectInfo
+                                onClick={toggleProjectInEditing}
+                            />
+                            <Timelapse
+                                stages={projectStages}
+                            />
+                            {stagesInEditing
+                                ? <div>
+                                    ... adding stage
+                                </div>
+                                : <Button text="add stage" onClick={toggleStagesInEditing} />
+                            }
+                        </>}
+                </div>
+        </ProjectProvider>
     );
 }
 

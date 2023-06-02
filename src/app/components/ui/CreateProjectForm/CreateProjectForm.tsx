@@ -1,19 +1,19 @@
-import React, {memo} from "react";
+import React, {memo, useContext} from "react";
 import {Input} from "../../common/Input/Input/Input";
 import {Button} from "../../common/Button/Button";
-import {project} from "../../../types/types";
 import {Form} from "../../common/Form/Form";
+import {ProjectContext} from "../../../providers";
 
 interface CreateProjectFormProps {
     onSubmit: (data: any) => void,
-    projectData: project
 }
 
 export const CreateProjectForm = memo((props: CreateProjectFormProps) => {
     const {
         onSubmit,
-        projectData,
     } = props
+
+    const projectData = useContext(ProjectContext)
 
     return (
         <Form onSubmit={onSubmit} defaultValues={projectData}>

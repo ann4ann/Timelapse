@@ -21,7 +21,7 @@ code {
     monospace;
 }
 
-/* width */
+/* scrollbar width */
 *::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -30,7 +30,7 @@ code {
 /* Track */
 *::-webkit-scrollbar-track {
   background: var(--transperent-accent-color);
-  margin: 18px;
+  /*margin: 5px;*/
 }
 
 /* Handle */

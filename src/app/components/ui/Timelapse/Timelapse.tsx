@@ -1,19 +1,20 @@
-import {memo} from "react";
+import {memo, useContext} from "react";
 import cls from "./Timelapse.module.css"
 import {addPercentsToDatesAndSort, getDaysFromStartToEnd} from "../../../utils/timilapseDatesActions";
-import {date, project} from "../../../types/types";
+import {date} from "../../../types/types";
 import {TimelapseBlock} from "./TimelapseBlock/TimelapseBlock";
+import {ProjectContext} from "../../../providers";
 
 interface TimelapseProps {
-    projectData: project,
     stages: date[]
 }
 
 export const Timelapse = memo((props: TimelapseProps) => {
     const {
-        projectData,
         stages,
     } = props
+
+    const projectData = useContext(ProjectContext)
 
     const daysFromStartToEnd = getDaysFromStartToEnd(projectData.startDate, projectData.endDate)
     const sortedArrWithPercents = addPercentsToDatesAndSort(stages, projectData.startDate, daysFromStartToEnd)

@@ -1,20 +1,20 @@
-import React, {memo} from "react";
+import React, {memo, useContext} from "react";
 import cls from "./ProjectInfo.module.css"
 import {Button} from "../../common/Button/Button";
 import {Text} from "../../common/Text/Text";
-import {project} from "../../../types/types";
 import {formatDateString} from "../../../utils/timilapseDatesActions";
+import {ProjectContext} from "../../../providers";
 
 interface ProjectInfoProps {
     onClick: () => void,
-    projectData: project,
 }
 
 export const ProjectInfo = memo((props: ProjectInfoProps) => {
     const {
         onClick,
-        projectData,
     } = props
+
+    const projectData = useContext(ProjectContext)
 
     return (
         <div className={cls.projectInfo}>
