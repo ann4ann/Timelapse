@@ -7,6 +7,7 @@ import {CreateProjectForm} from "./app/components/ui/CreateProjectForm/CreatePro
 import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 import {Button} from "./app/components/common/Button/Button";
 import {ProjectProvider} from "./app/providers";
+import StagesProvider from "./app/providers/StagesProvider/StagesProvider";
 
 //==================Данные для теста==================
 
@@ -67,6 +68,7 @@ function App() {
 
     return (
         <ProjectProvider initialProjectData={projectData}>
+            <StagesProvider initialDates={projectStages}>
                 <div className="App">
                     <Text
                         title="Timelapse"
@@ -82,7 +84,6 @@ function App() {
                                 onClick={toggleProjectInEditing}
                             />
                             <Timelapse
-                                stages={projectStages}
                             />
                             {stagesInEditing
                                 ? <div>
@@ -92,6 +93,7 @@ function App() {
                             }
                         </>}
                 </div>
+            </StagesProvider>
         </ProjectProvider>
     );
 }

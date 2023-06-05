@@ -2,7 +2,6 @@ import {project} from "../../types/types";
 import {FC, ReactNode, useMemo} from "react";
 import {emptyProject, ProjectContext} from "./ProjectContext";
 
-const defaultProjectData = localStorage.getItem("projectData") || emptyProject
 
 interface ProjectProviderProps {
     initialProjectData?: project;
@@ -16,7 +15,7 @@ const ProjectProvider: FC<ProjectProviderProps> = (props) => {
     } = props;
 
     const updatedProjectData = useMemo(() => {
-        return initialProjectData as project || defaultProjectData
+        return initialProjectData as project || emptyProject;
     }, [initialProjectData])
 
     return (

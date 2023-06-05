@@ -14,15 +14,17 @@ export const ProjectInfo = memo((props: ProjectInfoProps) => {
         onClick,
     } = props
 
-    const projectData = useContext(ProjectContext)
+    const {projectName, startDate, endDate} = useContext(ProjectContext)
+    console.log(projectName)
+
 
     return (
         <div className={cls.projectInfo}>
             <Text
-                title={projectData.projectName}
+                title={projectName}
                 content={`
-                ${formatDateString(projectData.startDate)} - 
-                ${formatDateString(projectData.endDate)}`}
+                ${formatDateString(startDate)} - 
+                ${formatDateString(endDate)}`}
             />
             <Button
                 text={"Редактировать проект"}
