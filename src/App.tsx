@@ -44,7 +44,7 @@ function App() {
         setProjectData(data)
         setProjectInEditing(false)
     };
-    const onStageFormSubmit = async (data: any) => {
+    const onStageFormSubmit = (data: any) => {
         console.log(data)
         const newStages = [
             ...projectStages,
@@ -67,19 +67,21 @@ function App() {
                     {projectInEditing &&
                         <CreateProjectForm
                             onSubmit={onProjectFormSubmit}
+                            onCancel={toggleProjectInEditing}
                         />
                     }
                     {!projectInEditing && !stagesInEditing &&
                         <>
-                            <ProjectInfo
-                            onClick={toggleProjectInEditing}
-                            />
+                            <ProjectInfo onClick={toggleProjectInEditing} />
                             <Timelapse />
                             <Button text="add stage" onClick={toggleStagesInEditing} />
                         </>
                     }
                     {stagesInEditing &&
-                        <AddProjectStageForm onSubmit={onStageFormSubmit}/>
+                        <AddProjectStageForm
+                            onSubmit={onStageFormSubmit}
+                            onCancel={toggleStagesInEditing}
+                        />
                     }
                 </div>
             </StagesProvider>

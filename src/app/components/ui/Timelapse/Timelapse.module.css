@@ -3,5 +3,6 @@
     min-height: 50px;
     background-color: var(--transperent-accent-color);
     padding: 10px;
+    margin-bottom: 15px;
     display: flex;
 }
