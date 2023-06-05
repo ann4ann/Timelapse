@@ -2,7 +2,6 @@ import {project} from "../../types/types";
 import {FC, ReactNode, useMemo} from "react";
 import {emptyProject, ProjectContext} from "./ProjectContext";
 
-
 interface ProjectProviderProps {
     initialProjectData?: project;
     children: ReactNode;

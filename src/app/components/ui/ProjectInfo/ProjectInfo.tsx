@@ -15,8 +15,6 @@ export const ProjectInfo = memo((props: ProjectInfoProps) => {
     } = props
 
     const {projectName, startDate, endDate} = useContext(ProjectContext)
-    console.log(projectName)
-
 
     return (
         <div className={cls.projectInfo}>

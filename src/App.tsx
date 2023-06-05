@@ -8,25 +8,7 @@ import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 import {Button} from "./app/components/common/Button/Button";
 import {ProjectProvider} from "./app/providers";
 import StagesProvider from "./app/providers/StagesProvider/StagesProvider";
-
-//==================Данные для теста==================
-
-const dates: date[] = [
-    {
-        dateStr: "2023-05-24",
-        dateName: "third"
-    },
-    {
-        dateStr: "2023-05-20",
-        dateName: "second"
-    },
-    {
-        dateStr: "2023-05-15",
-        dateName: "first"
-    },
-]
-//===========================================
-
+import {AddProjectStageForm} from "./app/components/ui/AddProjectStageForm/AddProjectStageForm";
 
 function App() {
     const [projectInEditing, setProjectInEditing] = useState<boolean>(true)
@@ -35,10 +17,7 @@ function App() {
         endDate: "",
         projectName: "",
     })
-    const [projectStages, setProjectStages] = useState<date[] | []>(
-        // []
-        dates
-    )
+    const [projectStages, setProjectStages] = useState<date[] | []>([])
     const [stagesInEditing, setStagesInEditing] = useState<boolean>(false)
 
     useEffect(() => {
@@ -60,10 +39,20 @@ function App() {
         setStagesInEditing(!stagesInEditing)
     }
 
-    const onSubmit = (data: any) => {
-        setProjectData(data)
+    const onProjectFormSubmit = (data: any) => {
         localStorage.setItem("projectData", JSON.stringify(data))
+        setProjectData(data)
         setProjectInEditing(false)
+    };
+    const onStageFormSubmit = async (data: any) => {
+        console.log(data)
+        const newStages = [
+            ...projectStages,
+            data
+        ]
+        setProjectStages(newStages)
+        localStorage.setItem("projectStages", JSON.stringify(newStages))
+        setStagesInEditing(false)
     };
 
     return (
@@ -75,23 +64,23 @@ function App() {
                         content="Let's start our timelapse!"
                         align={textAlign.CENTER}
                     />
-                    {projectInEditing
-                        ? <CreateProjectForm
-                            onSubmit={onSubmit}
+                    {projectInEditing &&
+                        <CreateProjectForm
+                            onSubmit={onProjectFormSubmit}
                         />
-                        : <>
+                    }
+                    {!projectInEditing && !stagesInEditing &&
+                        <>
                             <ProjectInfo
-                                onClick={toggleProjectInEditing}
+                            onClick={toggleProjectInEditing}
                             />
-                            <Timelapse
-                            />
-                            {stagesInEditing
-                                ? <div>
-                                    ... adding stage
-                                </div>
-                                : <Button text="add stage" onClick={toggleStagesInEditing} />
-                            }
-                        </>}
+                            <Timelapse />
+                            <Button text="add stage" onClick={toggleStagesInEditing} />
+                        </>
+                    }
+                    {stagesInEditing &&
+                        <AddProjectStageForm onSubmit={onStageFormSubmit}/>
+                    }
                 </div>
             </StagesProvider>
         </ProjectProvider>

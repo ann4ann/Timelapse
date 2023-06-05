@@ -11,13 +11,6 @@ interface InputProps {
     label?: string,
     inputType?: inputType,
 }
-interface SelectProps {
-    register?: UseFormRegister<any>,
-    errors?: FieldErrors<any>,
-    name: string
-    options: string[],
-    label?: string,
-}
 
 export const Input = (props: InputProps) => {
     const {
@@ -46,37 +39,8 @@ export const Input = (props: InputProps) => {
                         id={name}
                     />
                     {errorMessage && <div  className={cls.error}>{errorMessage.toString()}</div>}
-
                 </div>
             </div>
-        )
-    } else {
-        return null
-    }
-}
-
-export const Select = (props: SelectProps) => {
-    const {register, options, name, label = "", ...rest} = props
-
-    if (register) {
-        return (
-
-        <div className={cls.input}>
-            <label htmlFor={name} className={cls.label}>
-                {label}
-            </label>
-            <select
-                {...register(name)} {...rest}
-                className={cls.inputField}
-                id={name}
-            >
-                {options.map(value => (
-                    <option key={value} value={value}>
-                        {value}
-                    </option>
-                ))}
-            </select>
-        </div>
         )
     } else {
         return null
