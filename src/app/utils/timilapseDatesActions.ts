@@ -3,16 +3,29 @@ import {sortBy} from "lodash"
 
 type anyDate = string | Date | number
 
-export function formatDateString(dateStr: string): string {
+export function FormatMsDateToString(date: number): string {
+    const newDate = new Date(date)
+    const year = newDate.getFullYear()
+    const month = newDate.getMonth() + 1
+    const day = newDate.getDate()
+
+    return `${year}-${month < 10 ? "0"+month : month}-${day < 10 ? "0"+day : day}`
+}
+
+export function finalFormatDate(date: string | number): string {
+    const dateStr = typeof date === "string"
+        ? date
+        : FormatMsDateToString(date)
     const [year, monthNum, day] = dateStr.split("-")
     const monthArr = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-    const month = monthArr[Number(monthNum) - 1]
-    return `${day} ${month} ${year}`
+    const monthName = monthArr[Number(monthNum) - 1]
+
+    return `${day} ${monthName} ${year}`
 }
 
 export function getDaysBetweenTwoDates(
-    start: anyDate,
-    end: anyDate):number {
+    start: anyDate, end: anyDate
+):number {
         const startDay = new Date(start)
         const endDay = new Date(end)
         const countDays = (endDay.getTime() - startDay.getTime())

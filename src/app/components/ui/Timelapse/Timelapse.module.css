@@ -3,16 +3,25 @@
     min-height: 50px;
     background-color: var(--transperent-accent-color);
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 22px;
     display: flex;
     position: relative;
 }
 
 .today {
     position: absolute;
-    bottom: 5px;
+    bottom: 0;
     left: 0;
-    height: 6px;
+    height: 5px;
     background-color: var(--error);
     z-index: 100;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.todayDate {
+    position: absolute;
+    right: 0;
+    top: 6px;
+    white-space: nowrap;
 }

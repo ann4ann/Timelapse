@@ -1,7 +1,7 @@
 import {memo, useContext, useEffect, useState} from "react";
 import cls from "./Timelapse.module.css"
 import {
-    addPercentsToDatesAndSort,
+    addPercentsToDatesAndSort, finalFormatDate, FormatMsDateToString,
     getDaysBetweenTwoDates,
     getPercentFromStartToDate
 } from "../../../utils/timilapseDatesActions";
@@ -17,9 +17,12 @@ export const Timelapse = memo((props: TimelapseProps) => {
     const stages = useContext(StagesContext)
 
     const [todayDatePercent, setTodayDatePercent] = useState<number>(0)
-    const todayStr = Date.now()
+    const todayMs = Date.now()
     useEffect(() => {
-        setTodayDatePercent(getPercentFromStartToDate(projectData.startDate, todayStr, daysInProject))
+        setTodayDatePercent(getPercentFromStartToDate(projectData.startDate, FormatMsDateToString(todayMs), daysInProject))
+        console.log(getPercentFromStartToDate(projectData.startDate, FormatMsDateToString(todayMs), daysInProject), "percent")
+        console.log(daysInProject, "proj days")
+        console.log(projectData.startDate, "start")
     }, [projectData, stages])
 
     const daysInProject = getDaysBetweenTwoDates(projectData.startDate, projectData.endDate)
@@ -33,7 +36,9 @@ export const Timelapse = memo((props: TimelapseProps) => {
             ))}
             <div className={cls.today} style={{
                 width: `calc((100% - 20px) * ${todayDatePercent} / 100 + 10px)`
-            }}></div>
+            }}>
+                <p className={cls.todayDate}>Today {finalFormatDate(todayMs)}</p>
+            </div>
         </div>
     )
 })
