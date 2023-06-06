@@ -1,30 +1,44 @@
 import {date} from "../types/types";
 import {sortBy} from "lodash"
 
-export function formatDateString(date: string): string {
-    const [year, monthNum, day] = date.split("-")
+type anyDate = string | Date | number
+
+export function formatDateString(dateStr: string): string {
+    const [year, monthNum, day] = dateStr.split("-")
     const monthArr = ["January","February","March","April","May","June","July","August","September","October","November","December"]
     const month = monthArr[Number(monthNum) - 1]
     return `${day} ${month} ${year}`
 }
 
-export function getDaysFromStartToEnd(start: string, end: string):number {
-    const startDayMs = new Date(start)
-    const endDayMs = new Date(end)
-    const countDays = (endDayMs.getTime() - startDayMs.getTime())
-        / (1000 * 60 * 60 * 24)
+export function getDaysBetweenTwoDates(
+    start: anyDate,
+    end: anyDate):number {
+        const startDay = new Date(start)
+        const endDay = new Date(end)
+        const countDays = (endDay.getTime() - startDay.getTime())
+            / (1000 * 60 * 60 * 24)
 
-    return countDays
+        return countDays
+}
+
+export function getPercentFromStartToDate(
+    start: anyDate,
+    date: anyDate,
+    daysInProject: number,
+): number {
+    const daysAfterStart = getDaysBetweenTwoDates(start, date)
+    const percent = Math.round((daysAfterStart / daysInProject) * 100)
+
+    return percent
 }
 
 export function addPercentsToDatesAndSort(
     datesArr: date[],
-    start: string,
+    start: string | Date,
     daysInProject: number
 ): Required<date>[] {
     const arrWithPercents = datesArr.map((item) => {
-        const daysAfterStart = getDaysFromStartToEnd(start, item.dateStr)
-        const percent = Math.round(daysAfterStart / daysInProject * 100)
+        const percent = getPercentFromStartToDate(start, item.dateStr, daysInProject)
         return ({...item, percent: percent})
     })
     const sortedArr = sortBy(arrWithPercents, o => o.percent)
@@ -35,7 +49,6 @@ export function addPercentsToDatesAndSort(
         const absolutePercent = item.percent - sortedArr[index - 1].percent
         return ({...item, absolutePercent: absolutePercent})
     })
-    // console.log(sortedArr)
 
     return resultArr
 }

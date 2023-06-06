@@ -17,8 +17,11 @@ export const TimelapseBlock = memo((props: TimelapseBlockProps) => {
         <div
             className={cls.timelapseBlock}
             key={blockDate.dateName + blockDate.dateStr}
-            style={{width: `${blockDate.absolutePercent}%`, backgroundColor: createRandomColor(), textAlign: "center"}}
-        >
+            style={{
+                width: `${blockDate.absolutePercent}%`,
+                backgroundColor: createRandomColor(),
+                textAlign: "center"
+        }}>
             <p className={cls.name}>{blockDate.dateName}</p>
             <div className={cls.info}>
                 <p className={cls.date}>{formatDateString(blockDate.dateStr)}</p>

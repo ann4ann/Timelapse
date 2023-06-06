@@ -5,4 +5,14 @@
     padding: 10px;
     margin-bottom: 15px;
     display: flex;
+    position: relative;
+}
+
+.today {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    height: 6px;
+    background-color: var(--error);
+    z-index: 100;
 }

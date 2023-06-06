@@ -1,6 +1,10 @@
-import {memo, useContext} from "react";
+import {memo, useContext, useEffect, useState} from "react";
 import cls from "./Timelapse.module.css"
-import {addPercentsToDatesAndSort, getDaysFromStartToEnd} from "../../../utils/timilapseDatesActions";
+import {
+    addPercentsToDatesAndSort,
+    getDaysBetweenTwoDates,
+    getPercentFromStartToDate
+} from "../../../utils/timilapseDatesActions";
 import {TimelapseBlock} from "./TimelapseBlock/TimelapseBlock";
 import {ProjectContext} from "../../../providers";
 import {StagesContext} from "../../../providers/StagesProvider/StagesContext";
@@ -12,14 +16,24 @@ export const Timelapse = memo((props: TimelapseProps) => {
     const projectData = useContext(ProjectContext)
     const stages = useContext(StagesContext)
 
-    const daysFromStartToEnd = getDaysFromStartToEnd(projectData.startDate, projectData.endDate)
-    const sortedArrWithPercents = addPercentsToDatesAndSort(stages, projectData.startDate, daysFromStartToEnd)
+    const [todayDatePercent, setTodayDatePercent] = useState<number>(0)
+    const todayStr = Date.now()
+    useEffect(() => {
+        setTodayDatePercent(getPercentFromStartToDate(projectData.startDate, todayStr, daysInProject))
+    }, [projectData, stages])
+
+    const daysInProject = getDaysBetweenTwoDates(projectData.startDate, projectData.endDate)
+    const sortedArrWithPercents = addPercentsToDatesAndSort(stages, projectData.startDate, daysInProject)
+
 
     return (
-        <div className={cls.timelapse}>{
-            sortedArrWithPercents.map(item => (
+        <div className={cls.timelapse}>
+            {sortedArrWithPercents.map(item => (
                 <TimelapseBlock blockDate={item} key={item.dateName + item.dateStr} />
-            ))
-        }</div>
+            ))}
+            <div className={cls.today} style={{
+                width: `calc((100% - 20px) * ${todayDatePercent} / 100 + 10px)`
+            }}></div>
+        </div>
     )
 })
