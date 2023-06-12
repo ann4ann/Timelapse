@@ -23,14 +23,13 @@ code {
 
 /* scrollbar width */
 *::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 7px;
+  height: 7px;
 }
 
 /* Track */
 *::-webkit-scrollbar-track {
   background: var(--transperent-accent-color);
-  /*margin: 5px;*/
 }
 
 /* Handle */

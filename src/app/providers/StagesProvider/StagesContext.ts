@@ -1,9 +1,16 @@
 import {createContext} from "react";
-import {date} from "../../types/types";
+import {projectStage} from "../../types/types";
 
-export const emptyDate: date = {
+type StagesContextType = {
     dateStr: "",
     dateName: "",
+    onStageClick?: () => void
 }
 
-export const StagesContext = createContext<date[] | []>([emptyDate])
+export const emptyDate: StagesContextType = {
+    dateStr: "",
+    dateName: "",
+    onStageClick: () => {}
+}
+
+export const StagesContext = createContext<projectStage[] | []>([emptyDate])

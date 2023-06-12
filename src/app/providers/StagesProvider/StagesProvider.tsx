@@ -1,9 +1,9 @@
-import {date} from "../../types/types";
+import {projectStage} from "../../types/types";
 import {FC, ReactNode, useMemo} from "react";
 import {StagesContext} from "./StagesContext";
 
 interface ProjectProviderProps {
-    initialDates?: date[] | [];
+    initialDates?: projectStage[] | [];
     children: ReactNode;
 }
 
@@ -14,7 +14,7 @@ const StagesProvider: FC<ProjectProviderProps> = (props) => {
     } = props;
 
     const updatedProjectData = useMemo(() => {
-        return initialDates as date[] || [];
+        return initialDates as projectStage[] || [];
     }, [initialDates])
 
     return (

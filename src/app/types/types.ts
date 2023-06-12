@@ -1,4 +1,4 @@
-export interface date {
+export interface projectStage {
     dateStr: string,
     dateName: string,
     percent?: number,

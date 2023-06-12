@@ -1,4 +1,4 @@
-import {date} from "../types/types";
+import {projectStage} from "../types/types";
 import {sortBy} from "lodash"
 
 type anyDate = string | Date | number
@@ -46,10 +46,10 @@ export function getPercentFromStartToDate(
 }
 
 export function addPercentsToDatesAndSort(
-    datesArr: date[],
+    datesArr: projectStage[],
     start: string | Date,
     daysInProject: number
-): Required<date>[] {
+): Required<projectStage>[] {
     const arrWithPercents = datesArr.map((item) => {
         const percent = getPercentFromStartToDate(start, item.dateStr, daysInProject)
         return ({...item, percent: percent})

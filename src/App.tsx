@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Text, textAlign} from "./app/components/common/Text/Text";
 import {Timelapse} from "./app/components/ui/Timelapse/Timelapse";
-import {date, project} from "./app/types/types";
+import {project, projectStage} from "./app/types/types";
 import {CreateProjectForm} from "./app/components/ui/CreateProjectForm/CreateProjectForm";
 import {ProjectInfo} from "./app/components/ui/ProjectInfo/ProjectInfo";
 import {Button} from "./app/components/common/Button/Button";
@@ -17,8 +17,13 @@ function App() {
         endDate: "",
         projectName: "",
     })
-    const [projectStages, setProjectStages] = useState<date[] | []>([])
+    const [projectStages, setProjectStages] = useState<projectStage[] | []>([])
     const [stagesInEditing, setStagesInEditing] = useState<boolean>(false)
+    const emptyProject = {
+        dateStr: "",
+        dateName: "",
+    }
+    const [projectStageData,setProjectStageData] = useState<projectStage>(emptyProject)
 
     useEffect(() => {
         const strData = localStorage.getItem("projectData")
@@ -32,28 +37,59 @@ function App() {
         }
     }, [])
 
+    // PROJECT FORM
     const toggleProjectInEditing = () => {
         setProjectInEditing(!projectInEditing)
     }
-    const toggleStagesInEditing = () => {
-        setStagesInEditing(!stagesInEditing)
-    }
-
     const onProjectFormSubmit = (data: any) => {
         localStorage.setItem("projectData", JSON.stringify(data))
         setProjectData(data)
         setProjectInEditing(false)
     };
-    const onStageFormSubmit = (data: any) => {
-        console.log(data)
-        const newStages = [
-            ...projectStages,
-            data
-        ]
-        setProjectStages(newStages)
-        localStorage.setItem("projectStages", JSON.stringify(newStages))
+
+    // STAGE FORM
+    const setNewStagesData = (stagesData: any) => {
+        setProjectStages(stagesData)
+        localStorage.setItem("projectStages", JSON.stringify(stagesData))
         setStagesInEditing(false)
+        setProjectStageData(emptyProject)
+    }
+    const deleteStageAndGetNewStagesData = (deletedStageData: projectStage) => {
+        const newStages = projectStages.filter((stage) =>
+            deletedStageData.dateName !== stage.dateName
+            && deletedStageData.dateStr !== stage.dateStr
+        )
+        return newStages
+    }
+    const onStageFormSubmit = (data: any) => {
+        let newStages
+        if (projectStageData.dateName) {
+            const filteredData = deleteStageAndGetNewStagesData(projectStageData)
+            newStages = [
+                ...filteredData,
+                data
+            ]
+        } else {
+            newStages = [
+                ...projectStages,
+                data
+            ]
+        }
+        setNewStagesData(newStages)
     };
+    const onStageFormCancel = () => {
+        setStagesInEditing(false)
+        setProjectStageData(emptyProject)
+    }
+    const onStageFormDelete = () => {
+        const newStages = deleteStageAndGetNewStagesData(projectStageData)
+        setNewStagesData(newStages)
+    }
+
+    const onStageBlockClick = (data: projectStage) => {
+        setProjectStageData(data)
+        setStagesInEditing(true)
+    }
 
     return (
         <ProjectProvider initialProjectData={projectData}>
@@ -64,23 +100,28 @@ function App() {
                         content="Let's start our timelapse!"
                         align={textAlign.CENTER}
                     />
+
                     {projectInEditing &&
                         <CreateProjectForm
                             onSubmit={onProjectFormSubmit}
                             onCancel={toggleProjectInEditing}
                         />
                     }
+
                     {!projectInEditing && !stagesInEditing &&
                         <>
                             <ProjectInfo onClick={toggleProjectInEditing} />
-                            <Timelapse />
-                            <Button text="add stage" onClick={toggleStagesInEditing} />
+                            <Timelapse onStageBlockClick={onStageBlockClick}/>
+                            <Button text="add stage" onClick={() => (setStagesInEditing(true))} />
                         </>
                     }
+
                     {stagesInEditing &&
                         <AddProjectStageForm
+                            defaultValues={projectStageData}
                             onSubmit={onStageFormSubmit}
-                            onCancel={toggleStagesInEditing}
+                            onCancel={onStageFormCancel}
+                            onDelete={onStageFormDelete}
                         />
                     }
                 </div>
