@@ -6,6 +6,10 @@
     align-items: center;
 }
 
+.input[type=file] {
+
+}
+
 .label {
     flex-grow: 1;
 }
@@ -19,6 +23,10 @@
     transition: background-color ease-out 0.3s;
     position: relative;
 }
+.inputField[type=file] {
+    width: 300px;
+}
+
 .inputField:focus {
     outline: none;
     background-color: var(--accent-color);

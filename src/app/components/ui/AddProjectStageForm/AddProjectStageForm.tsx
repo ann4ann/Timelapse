@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from "react";
+import React, {memo} from "react";
 import {Form} from "../../common/Form/Form";
 import {Button} from "../../common/Button/Button";
 import {Input} from "../../common/Input/Input/Input";
@@ -19,18 +19,10 @@ export const AddProjectStageForm = memo((props: AddProjectStageProps) => {
         onDelete,
         defaultValues,
     } = props
-    const [isStageExists, setIsStageExists] = useState<boolean>(false)
 
-    const titleText = isStageExists
+    const titleText = defaultValues.dateName
         ? "Изменить этап проекта"
         : "Добавление этапа проекта"
-
-    useEffect(() => {
-        if (defaultValues.dateStr) {
-            setIsStageExists(true)
-        }
-    }, [titleText])
-
 
     return (
         <>
@@ -41,7 +33,7 @@ export const AddProjectStageForm = memo((props: AddProjectStageProps) => {
                 <Button text="Confirm" type="submit"/>
                 <Button text="Cancel" onClick={onCancel}/>
             </Form>
-            {isStageExists &&
+            {defaultValues.dateName &&
                 <Button
                     text="Delete stage"
                     onClick={onDelete}

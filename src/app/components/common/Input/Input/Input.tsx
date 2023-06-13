@@ -2,7 +2,7 @@ import React from "react";
 import {FieldErrors, UseFormRegister} from "react-hook-form";
 import cls from "./Input.module.css";
 
-export type inputType = "text" | "date" | "password"
+export type inputType = "text" | "date" | "password" | "file"
 
 interface InputProps {
     register?: UseFormRegister<any>,

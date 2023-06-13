@@ -18,9 +18,13 @@ export const CreateProjectForm = memo((props: CreateProjectFormProps) => {
 
     const projectData = useContext(ProjectContext)
 
+    const titleText = projectData.projectName
+        ? "Изменить проект"
+        : "Создание проекта"
+
     return (
         <>
-            <Text title="Создание проекта" />
+            <Text title={titleText} />
             <Form onSubmit={onSubmit} defaultValues={projectData}>
                 <Input name="projectName" label="Введите имя проекта"/>
                 <Input name="startDate" label="Укажите начало проекта" inputType="date" />

@@ -9,16 +9,27 @@ import {Button} from "./app/components/common/Button/Button";
 import {ProjectProvider} from "./app/providers";
 import StagesProvider from "./app/providers/StagesProvider/StagesProvider";
 import {AddProjectStageForm} from "./app/components/ui/AddProjectStageForm/AddProjectStageForm";
+import {UploadFileForm} from "./app/components/common/UploadFileForm/UploadFileForm";
+
+interface onEdit {
+    project: boolean,
+    stage: boolean,
+    upload: boolean,
+}
 
 function App() {
-    const [projectInEditing, setProjectInEditing] = useState<boolean>(true)
+    const [uploadFile, setUploadFile] = useState<string>("")
+    const [isOnEditing, setIsOnEditing] = useState<onEdit>({
+        project: true,
+        stage: false,
+        upload: false,
+    })
     const [projectData, setProjectData] = useState<project>({
         startDate: "",
         endDate: "",
         projectName: "",
     })
     const [projectStages, setProjectStages] = useState<projectStage[] | []>([])
-    const [stagesInEditing, setStagesInEditing] = useState<boolean>(false)
     const emptyProject = {
         dateStr: "",
         dateName: "",
@@ -30,7 +41,10 @@ function App() {
         const strStages = localStorage.getItem("projectStages")
         if (strData) {
             setProjectData(JSON.parse(strData))
-            setProjectInEditing(false)
+            setIsOnEditing(prevState => ({
+                ...prevState,
+                project: false
+            }))
         }
         if (strStages) {
             setProjectStages(JSON.parse(strStages))
@@ -39,20 +53,35 @@ function App() {
 
     // PROJECT FORM
     const toggleProjectInEditing = () => {
-        setProjectInEditing(!projectInEditing)
+        setIsOnEditing(prevState => ({
+            ...prevState,
+            project: !prevState.project
+        }))
     }
     const onProjectFormSubmit = (data: any) => {
         localStorage.setItem("projectData", JSON.stringify(data))
         setProjectData(data)
-        setProjectInEditing(false)
+        setIsOnEditing(prevState => ({
+            ...prevState,
+            project: false
+        }))
     };
 
     // STAGE FORM
     const setNewStagesData = (stagesData: any) => {
         setProjectStages(stagesData)
         localStorage.setItem("projectStages", JSON.stringify(stagesData))
-        setStagesInEditing(false)
+        setIsOnEditing(prevState => ({
+            ...prevState,
+            stage: false
+        }))
         setProjectStageData(emptyProject)
+    }
+    const setStageInEditing = () => {
+        setIsOnEditing(prevState => ({
+            ...prevState,
+            stage: true
+        }))
     }
     const deleteStageAndGetNewStagesData = (deletedStageData: projectStage) => {
         const newStages = projectStages.filter((stage) =>
@@ -78,7 +107,10 @@ function App() {
         setNewStagesData(newStages)
     };
     const onStageFormCancel = () => {
-        setStagesInEditing(false)
+        setIsOnEditing(prevState => ({
+            ...prevState,
+            stage: false
+        }))
         setProjectStageData(emptyProject)
     }
     const onStageFormDelete = () => {
@@ -88,7 +120,67 @@ function App() {
 
     const onStageBlockClick = (data: projectStage) => {
         setProjectStageData(data)
-        setStagesInEditing(true)
+        setIsOnEditing(prevState => ({
+            ...prevState,
+            stage: true
+        }))
+    }
+
+    // SAVE / LOAD
+    const onSaveProjectClick = () => {
+        if(!projectData.projectName) {
+            return
+        }
+        const saveLink = document.createElement("a")
+        const data = localStorage.getItem("projectData")
+                        + "/"
+                        + localStorage.getItem("projectStages")
+        console.log(data)
+        const dataBlob = new Blob([data ? data : ""], {type: "text/plain"})
+        saveLink.href = window.URL.createObjectURL(dataBlob)
+        saveLink.download = `${projectData.projectName}.txt`
+        saveLink.click()
+    }
+
+    const toggleUploadIsEditing = () => {
+        setIsOnEditing(prevState => ({
+            ...prevState,
+            upload: !prevState.upload
+        }))
+    }
+
+    const onUploadProjectClick = async (data: any) => {
+        console.log(data)
+        const formData = new FormData()
+        await formData.append("files", data.file[0])
+        const fileData = await formData.get("files")
+        const dataBlob = new Blob([fileData ? fileData : ""], {type: "text/plain"})
+        const reader = new FileReader()
+        reader.onload = function (e) {
+            const fileContent = (e.target?.result);
+            console.log(typeof fileContent)
+            let projDataArr: string[] = []
+            if (typeof fileContent === "string") {
+                projDataArr = fileContent.split("/")
+            }
+            const newProjectData = JSON.parse(projDataArr[0])
+            const newProjectStagesData = JSON.parse(projDataArr[1])
+
+            if (newProjectData.projectName) {
+                setProjectData(newProjectData)
+                setProjectStages(newProjectStagesData)
+                setIsOnEditing(prevState => ({
+                    ...prevState,
+                    upload: false
+                }))
+            } else {
+                console.log("Wrong file")
+            }
+        }
+        reader.onerror = function (e) {
+            console.log("error")
+        }
+        reader.readAsText(dataBlob)
     }
 
     return (
@@ -100,23 +192,23 @@ function App() {
                         content="Let's start our timelapse!"
                         align={textAlign.CENTER}
                     />
+                    {projectData.projectName && <ProjectInfo onClick={toggleProjectInEditing}/>}
 
-                    {projectInEditing &&
+                    {isOnEditing.project &&
                         <CreateProjectForm
                             onSubmit={onProjectFormSubmit}
                             onCancel={toggleProjectInEditing}
                         />
                     }
 
-                    {!projectInEditing && !stagesInEditing &&
+                    {!isOnEditing.project && !isOnEditing.stage &&
                         <>
-                            <ProjectInfo onClick={toggleProjectInEditing} />
                             <Timelapse onStageBlockClick={onStageBlockClick}/>
-                            <Button text="add stage" onClick={() => (setStagesInEditing(true))} />
+                            <Button text="add stage" onClick={setStageInEditing} />
                         </>
                     }
 
-                    {stagesInEditing &&
+                    {isOnEditing.stage &&
                         <AddProjectStageForm
                             defaultValues={projectStageData}
                             onSubmit={onStageFormSubmit}
@@ -124,6 +216,13 @@ function App() {
                             onDelete={onStageFormDelete}
                         />
                     }
+                    {!isOnEditing.project && !isOnEditing.stage &&
+                        <div>
+                            <Button text="Сохранить проект" onClick={onSaveProjectClick} />
+                            <Button text="Загрузить проект" onClick={toggleUploadIsEditing} />
+                        </div>
+                    }
+                    {isOnEditing.upload && <UploadFileForm onSubmit={onUploadProjectClick}/>}
                 </div>
             </StagesProvider>
         </ProjectProvider>
