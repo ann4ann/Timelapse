@@ -150,10 +150,10 @@ function App() {
     }
 
     const onUploadProjectClick = async (data: any) => {
-        console.log(data)
         const formData = new FormData()
         await formData.append("files", data.file[0])
         const fileData = await formData.get("files")
+        console.log(fileData)
         const dataBlob = new Blob([fileData ? fileData : ""], {type: "text/plain"})
         const reader = new FileReader()
         reader.onload = function (e) {
@@ -169,6 +169,8 @@ function App() {
             if (newProjectData.projectName) {
                 setProjectData(newProjectData)
                 setProjectStages(newProjectStagesData)
+                localStorage.setItem("projectStages", JSON.stringify(newProjectStagesData))
+                localStorage.setItem("projectData", JSON.stringify(newProjectData))
                 setIsOnEditing(prevState => ({
                     ...prevState,
                     upload: false
