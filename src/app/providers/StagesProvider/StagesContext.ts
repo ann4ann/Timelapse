@@ -1,7 +1,7 @@
 import {createContext} from "react";
 import {projectStage} from "../../types/types";
 
-type StagesContextType = {
+interface StagesContextType {
     dateStr: "",
     dateName: "",
     onStageClick?: () => void

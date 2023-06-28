@@ -26,12 +26,12 @@ export function finalFormatDate(date: string | number): string {
 export function getDaysBetweenTwoDates(
     start: anyDate, end: anyDate
 ):number {
-        const startDay = new Date(start)
-        const endDay = new Date(end)
-        const countDays = (endDay.getTime() - startDay.getTime())
+    const startDay = new Date(start)
+    const endDay = new Date(end)
+    const countDays = (endDay.getTime() - startDay.getTime())
             / (1000 * 60 * 60 * 24)
 
-        return countDays
+    return countDays
 }
 
 export function getPercentFromStartToDate(

@@ -1,12 +1,13 @@
 import React, {memo, useContext} from "react";
-import {Input} from "../../common/Input/Input/Input";
+import {Input} from "../../common/Input/Input";
 import {Button} from "../../common/Button/Button";
 import {Form} from "../../common/Form/Form";
 import {ProjectContext} from "../../../providers";
 import {Text} from "../../common/Text/Text";
+import {project} from "../../../types/types";
 
 interface CreateProjectFormProps {
-    onSubmit: (data: any) => void,
+    onSubmit: (data: project) => void,
     onCancel: () => void,
 }
 

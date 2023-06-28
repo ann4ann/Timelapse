@@ -25,11 +25,11 @@ export const Timelapse = memo((props: TimelapseProps) => {
 
     const [todayDatePercent, setTodayDatePercent] = useState<number>(0)
     const todayMs = Date.now()
+    const daysInProject = getDaysBetweenTwoDates(projectData.startDate, projectData.endDate)
     useEffect(() => {
         setTodayDatePercent(getPercentFromStartToDate(projectData.startDate, FormatMsDateToString(todayMs), daysInProject))
     }, [projectData, stages])
 
-    const daysInProject = getDaysBetweenTwoDates(projectData.startDate, projectData.endDate)
     const sortedArrWithPercents = addPercentsToDatesAndSort(stages, projectData.startDate, daysInProject)
 
 

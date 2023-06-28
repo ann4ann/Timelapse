@@ -1,0 +1,22 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "linebreak-style": 0,
+    "quotes": [2, "double"],
+    "indent": [2, 4],
+
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"]
+  },
+  "env": {
+    "browser": true,
+    "es2021": true
+  }
+}

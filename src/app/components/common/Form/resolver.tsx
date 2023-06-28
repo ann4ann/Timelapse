@@ -1,16 +1,16 @@
 import {Resolver} from "react-hook-form";
 
-export type FormValues = {
+export interface FormValues {
     projectName: string,
     startDate: string,
     endDate: string,
     dateStr: string,
     dateName: string,
-};
+}
 
 type validation = "required" | "minLength"
 
-export const resolver: Resolver<FormValues> = async (values, options) => {
+export const resolver: Resolver<FormValues> = async (values) => {
 
     function getFieldErr (fieldValue: string, ...validation: validation[]) {
         // REQUIRED
@@ -18,7 +18,7 @@ export const resolver: Resolver<FormValues> = async (values, options) => {
             return (
                 {
                     type: "required",
-                    message: `This field is required`
+                    message: "This field is required"
                 }
             )
         }
@@ -27,7 +27,7 @@ export const resolver: Resolver<FormValues> = async (values, options) => {
             return (
                 {
                     type: "minLength",
-                    message: `This field must contain 5 or more characters`
+                    message: "This field must contain 5 or more characters"
                 }
             )
         }

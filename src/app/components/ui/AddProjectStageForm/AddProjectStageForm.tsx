@@ -1,12 +1,12 @@
 import React, {memo} from "react";
 import {Form} from "../../common/Form/Form";
 import {Button} from "../../common/Button/Button";
-import {Input} from "../../common/Input/Input/Input";
+import {Input} from "../../common/Input/Input";
 import {Text} from "../../common/Text/Text";
 import {projectStage} from "../../../types/types";
 
 interface AddProjectStageProps {
-    onSubmit: (data: any) => void,
+    onSubmit: (data: projectStage) => void,
     onCancel: () => void,
     onDelete: () => void,
     defaultValues: projectStage

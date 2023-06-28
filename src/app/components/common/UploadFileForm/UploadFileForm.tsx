@@ -1,11 +1,15 @@
 import {memo} from "react";
-import cls from "./UploadFileForm.module.css"
+// import cls from "./UploadFileForm.module.css"
 import {Form} from "../Form/Form";
-import {Input} from "../Input/Input/Input";
+import {Input} from "../Input/Input";
 import {Button} from "../Button/Button";
 
+export interface uploadedFile extends File{
+    file: string
+}
+
 interface UploadFileFormProps {
-    onSubmit: (data: any) => void
+    onSubmit: (data: uploadedFile) => void
 }
 
 export const UploadFileForm = memo((props: UploadFileFormProps) => {

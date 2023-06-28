@@ -26,7 +26,7 @@ export const TimelapseBlock = memo((props: TimelapseBlockProps) => {
                 width: `${blockDate.absolutePercent}%`,
                 backgroundColor: createRandomColor(),
                 textAlign: "center"
-        }}>
+            }}>
             <p className={cls.name}>{blockDate.dateName}</p>
             <p className={cls.date}>{finalFormatDate(blockDate.dateStr)}</p>
             <p className={cls.percent}>{blockDate.percent + "%"}</p>
