@@ -9,7 +9,7 @@ import {Button} from "./app/components/common/Button/Button";
 import {ProjectProvider} from "./app/providers";
 import StagesProvider from "./app/providers/StagesProvider/StagesProvider";
 import {AddProjectStageForm} from "./app/components/ui/AddProjectStageForm/AddProjectStageForm";
-import {UploadFileForm} from "./app/components/common/UploadFileForm/UploadFileForm";
+import {uploadedFile, UploadFileForm} from "./app/components/common/UploadFileForm/UploadFileForm";
 
 interface onEdit {
     project: boolean,
@@ -18,7 +18,6 @@ interface onEdit {
 }
 
 function App() {
-    const [uploadFile, setUploadFile] = useState<string>("")
     const [isOnEditing, setIsOnEditing] = useState<onEdit>({
         project: true,
         stage: false,
@@ -35,6 +34,7 @@ function App() {
         dateName: "",
     }
     const [projectStageData,setProjectStageData] = useState<projectStage>(emptyProject)
+    const [uploadFileErr, setUploadFileErr] = useState<boolean>(false)
 
     useEffect(() => {
         const strData = localStorage.getItem("projectData")
@@ -55,7 +55,8 @@ function App() {
     const toggleProjectInEditing = () => {
         setIsOnEditing(prevState => ({
             ...prevState,
-            project: !prevState.project
+            project: !prevState.project,
+            stage: false
         }))
     }
     const onProjectFormSubmit = (data: any) => {
@@ -77,10 +78,10 @@ function App() {
         }))
         setProjectStageData(emptyProject)
     }
-    const setStageInEditing = () => {
+    const toggleStageInEditing = () => {
         setIsOnEditing(prevState => ({
             ...prevState,
-            stage: true
+            stage: !prevState.stage
         }))
     }
     const deleteStageAndGetNewStagesData = (deletedStageData: projectStage) => {
@@ -147,26 +148,34 @@ function App() {
             ...prevState,
             upload: !prevState.upload
         }))
+        setUploadFileErr(false)
     }
 
-    const onUploadProjectClick = async (data: any) => {
+    const onUploadProjectClick = async (data: uploadedFile) => {
         const formData = new FormData()
         await formData.append("files", data.file[0])
         const fileData = await formData.get("files")
-        console.log(fileData)
+        // console.log(fileData)
         const dataBlob = new Blob([fileData ? fileData : ""], {type: "text/plain"})
         const reader = new FileReader()
         reader.onload = function (e) {
             const fileContent = (e.target?.result);
-            console.log(typeof fileContent)
+
             let projDataArr: string[] = []
             if (typeof fileContent === "string") {
                 projDataArr = fileContent.split("/")
             }
-            const newProjectData = JSON.parse(projDataArr[0])
-            const newProjectStagesData = JSON.parse(projDataArr[1])
 
-            if (newProjectData.projectName) {
+            let newProjectData
+            let newProjectStagesData
+            try {
+                newProjectData = JSON.parse(projDataArr[0])
+                newProjectStagesData = JSON.parse(projDataArr[1])
+            } catch (e) {
+                console.log("parse error")
+            }
+
+            if (newProjectData?.projectName) {
                 setProjectData(newProjectData)
                 setProjectStages(newProjectStagesData)
                 localStorage.setItem("projectStages", JSON.stringify(newProjectStagesData))
@@ -176,7 +185,7 @@ function App() {
                     upload: false
                 }))
             } else {
-                console.log("Wrong file")
+                setUploadFileErr(true)
             }
         }
         reader.onerror = function (e) {
@@ -189,12 +198,15 @@ function App() {
         <ProjectProvider initialProjectData={projectData}>
             <StagesProvider initialDates={projectStages}>
                 <div className="App">
-                    <Text
-                        title="Timelapse"
-                        content="Let's start our timelapse!"
-                        align={textAlign.CENTER}
-                    />
-                    {projectData.projectName && <ProjectInfo onClick={toggleProjectInEditing}/>}
+                    <div className="headerSection">
+                        <Text
+                            title="Timelapse"
+                            content="Let's start our timelapse!"
+                            align={textAlign.CENTER}
+                        />
+                    </div>
+                    {projectData.projectName && !isOnEditing.project &&
+                        <ProjectInfo onClick={toggleProjectInEditing}/>}
 
                     {isOnEditing.project &&
                         <CreateProjectForm
@@ -203,10 +215,11 @@ function App() {
                         />
                     }
 
-                    {!isOnEditing.project && !isOnEditing.stage &&
+                    {!isOnEditing.project &&
                         <>
                             <Timelapse onStageBlockClick={onStageBlockClick}/>
-                            <Button text="add stage" onClick={setStageInEditing} />
+                            {!isOnEditing.stage &&
+                                <Button text="add stage" onClick={toggleStageInEditing}/>}
                         </>
                     }
 
@@ -219,12 +232,13 @@ function App() {
                         />
                     }
                     {!isOnEditing.project && !isOnEditing.stage &&
-                        <div>
+                        <div className="loadSection">
                             <Button text="Сохранить проект" onClick={onSaveProjectClick} />
                             <Button text="Загрузить проект" onClick={toggleUploadIsEditing} />
+                            {isOnEditing.upload &&
+                                <UploadFileForm onSubmit={onUploadProjectClick} wrongFileErr={uploadFileErr}/>}
                         </div>
                     }
-                    {isOnEditing.upload && <UploadFileForm onSubmit={onUploadProjectClick}/>}
                 </div>
             </StagesProvider>
         </ProjectProvider>

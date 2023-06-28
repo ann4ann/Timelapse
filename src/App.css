@@ -1,6 +1,15 @@
 .App {
     background-color: #fffbe9;
     min-height: 100vh;
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
+.headerSection {
+    background-color: var(--secondary-color);
+}
+
+.loadSection {
+    background-color: var(--secondary-color);
+    flex-grow: 1;
+}
