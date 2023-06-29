@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Timelapse/static/css/main.77168027.css",
+    "main.js": "/Timelapse/static/js/main.7e8c4e4d.js",
+    "static/js/787.0ef7cb5e.chunk.js": "/Timelapse/static/js/787.0ef7cb5e.chunk.js",
+    "index.html": "/Timelapse/index.html",
+    "main.77168027.css.map": "/Timelapse/static/css/main.77168027.css.map",
+    "main.7e8c4e4d.js.map": "/Timelapse/static/js/main.7e8c4e4d.js.map",
+    "787.0ef7cb5e.chunk.js.map": "/Timelapse/static/js/787.0ef7cb5e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.77168027.css",
+    "static/js/main.7e8c4e4d.js"
+  ]
+}
